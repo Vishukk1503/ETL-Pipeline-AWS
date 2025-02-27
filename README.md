@@ -10,8 +10,6 @@ This project contains the following files:
 - `main.py` - A Python script that contains all instructions to execute all the steps to extract, transform, and load the transformed data using the functions from extract.py, transform.py, and load_data_to_s3.py
 - `.env.example` - A text document that contains the list of environment variables used in .env file
 - `requirements.txt` - A text document that contains all the libraries required to execute the code
-- `Dockerfile` - A text document that contains all the instructions a user could call on the command line to assemble an image
-- `.dockerignore` - A text document that contains files or directories to be excluded when docker CLI sends the context to docker daemon. This helps to avoid unnecessarily sending large or sensitive files and directories to the daemon and potentially adding them to images using ADD or COPY
 - `.gitignore` - A text document that specifies intentionally untracked files that Git should ignore
 
 ## How to Run the ETL Pipeline Project

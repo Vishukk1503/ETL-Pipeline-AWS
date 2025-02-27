@@ -37,7 +37,7 @@ This project contains the following files:
      python3 main.py
      ```
 
-   ```
+
 
 ### B. Project Structure Details
 

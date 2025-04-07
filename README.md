@@ -77,6 +77,11 @@ The following environment variables need to be set in your `.env` file:
 - `S3_BUCKET_NAME`: Name of the S3 bucket for data storage
 - `S3_FILE_PATH`: Path within the bucket to store the output file
 
+## Flow Diagram
+
+![image](https://github.com/user-attachments/assets/9287df2f-8e0a-4702-a076-82ba4bc9a4c3)
+
+
 ## Troubleshooting
 - If connection to Redshift fails, verify your network settings and VPC configuration
 - For S3 access errors, check IAM permissions and credentials

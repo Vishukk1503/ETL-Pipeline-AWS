@@ -2,11 +2,18 @@
 setlocal
 title FIS Weekly S3 to Snowflake Loader
 set "FIS_LOADER_SELF=%~f0"
-powershell.exe -NoLogo -NoProfile -Command "$raw=[IO.File]::ReadAllText($env:FIS_LOADER_SELF); $marker=':FIS_POWERSHELL_PAYLOAD'; $start=$raw.LastIndexOf($marker); if($start -lt 0){throw 'Embedded loader payload is missing.'}; $code=$raw.Substring($start+$marker.Length); & ([ScriptBlock]::Create($code))"
+set "FIS_LOADER_LOG=%~dp0FisWeeklyLoad-last.log"
+if exist "%FIS_LOADER_LOG%" del /q "%FIS_LOADER_LOG%"
+powershell.exe -NoLogo -NoProfile -Command "$raw=[IO.File]::ReadAllText($env:FIS_LOADER_SELF); $marker=':FIS_POWERSHELL_PAYLOAD'; $start=$raw.LastIndexOf($marker); if($start -lt 0){Write-Error 'Embedded loader payload is missing.'; exit 1}; $code=$raw.Substring($start+$marker.Length); try { & ([ScriptBlock]::Create($code)) *>&1 | Tee-Object -FilePath $env:FIS_LOADER_LOG; if(-not $?){exit 1} } catch { $_ | Out-String | Tee-Object -FilePath $env:FIS_LOADER_LOG -Append | Write-Host; exit 1 }"
 set "FIS_LOADER_EXIT=%ERRORLEVEL%"
 echo.
 if "%FIS_LOADER_EXIT%"=="0" (echo [SUCCESS] Loader completed.) else (echo [ERROR] Loader stopped with exit code %FIS_LOADER_EXIT%.)
-pause
+echo Full log: "%FIS_LOADER_LOG%"
+echo.
+:FIS_KEEP_OPEN
+set "FIS_CLOSE="
+set /p "FIS_CLOSE=Type EXIT and press Enter to close this window: "
+if /i not "%FIS_CLOSE%"=="EXIT" goto FIS_KEEP_OPEN
 exit /b %FIS_LOADER_EXIT%
 :FIS_POWERSHELL_PAYLOAD
 [CmdletBinding()]
